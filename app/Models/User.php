@@ -7,11 +7,12 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -20,8 +21,14 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
+        'dni',
+        'telefono',
+        'rol',
+        'fecha_alta',
+        'fecha_baja',
     ];
 
     /**
@@ -42,8 +49,31 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'password' => 'hashed',
+            'fecha_alta' => 'date:d-m-Y',
+            'fecha_baja' => 'date:d-m-Y',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function recolecciones()
+    {
+        return $this->hasMany(Recoleccion::class);
+    }
+
+    public function horasTrabajadas()
+    {
+        return $this->hasMany(HorasTrabajada::class);
+    }
+
+    public function pagos()
+    {
+        return $this->hasMany(Pago::class);
+    }
+
+    public function tareas()
+    {
+        return $this->hasMany(Tarea::class);
     }
 }
