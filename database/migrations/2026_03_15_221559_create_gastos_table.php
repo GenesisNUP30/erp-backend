@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('gastos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('categoria_id')->constrained('categoria_gasto')->onDelete('restrict');
+            $table->foreignId('categoria_id')->constrained('categoria_gastos')->onDelete('restrict');
             $table->foreignId('cosecha_id')->constrained('cosechas')->onDelete('restrict');
             $table->date('fecha');
             $table->string('concepto');
