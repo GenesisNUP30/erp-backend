@@ -48,8 +48,8 @@ class Tarea extends Model
         return $this->belongsTo(Parcela::class);
     }
 
-    public function user()
+    public function responsable()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

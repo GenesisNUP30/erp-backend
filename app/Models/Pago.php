@@ -42,9 +42,9 @@ class Pago extends Model
 
     public $timestamps = false;
 
-    public function user()
+    public function trabajador()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function horasTrabajadas()

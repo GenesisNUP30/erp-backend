@@ -53,27 +53,26 @@ class User extends Authenticatable
             'fecha_alta' => 'date:d-m-Y',
             'fecha_baja' => 'date:d-m-Y',
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
         ];
     }
 
     public function recolecciones()
     {
-        return $this->hasMany(Recoleccion::class);
+        return $this->hasMany(Recoleccion::class, 'user_id');
     }
 
     public function horasTrabajadas()
     {
-        return $this->hasMany(HorasTrabajada::class);
+        return $this->hasMany(HorasTrabajada::class, 'user_id');
     }
 
     public function pagos()
     {
-        return $this->hasMany(Pago::class);
+        return $this->hasMany(Pago::class, 'user_id');
     }
 
     public function tareas()
     {
-        return $this->hasMany(Tarea::class);
+        return $this->hasMany(Tarea::class, 'user_id');
     }
 }
