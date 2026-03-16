@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->date('fecha_inicio');
-            $table->date('fecha_fin');
+            $table->date('fecha_fin')->nullable();
             $table->text('descripcion')->nullable();
             $table->enum('estado', ['activa', 'finalizada', 'planificada']);
         });
