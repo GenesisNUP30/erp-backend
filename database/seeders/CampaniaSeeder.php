@@ -15,7 +15,7 @@ class CampaniaSeeder extends Seeder
     {
         // Campaña finalizada (temporada 2024-2025)
         Campania::create([
-            'nombre' => 'Campaña Primavera 2024-2025',
+            'nombre' => 'Campaña 2024-2025',
             'fecha_inicio' => '2024-02-05',
             'fecha_fin' => '2025-06-30',
             'descripcion' => 'Prueba 1 campaña 2024-2025 finalizada',
@@ -33,7 +33,7 @@ class CampaniaSeeder extends Seeder
 
         // Campaña planificada
         Campania::create([
-            'nombre' => 'Campaña Planificada 2026-2027',
+            'nombre' => 'Campaña 2026-2027',
             'fecha_inicio' => '2026-10-01',
             'fecha_fin' => '2027-06-30',
             'descripcion' => 'Campaña planificada para la temporada 2026-2027.',

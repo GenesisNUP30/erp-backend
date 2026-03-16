@@ -18,7 +18,7 @@ class RecoleccionSeeder extends Seeder
         Recoleccion::create([
             'cosecha_id' => Cosecha::where('nombre_cosecha', 'Cosecha Otoño-Invierno 2025')->first()->id,
             'user_id' => User::where('username', 'juanperez')->first()->id,
-            'fecha' => '2026-03-14',
+            'fecha' => '2026-03-15',
             'num_cajas' => 12,
             'kilos_caja' => 2.5,
             'notas' => null,
@@ -28,7 +28,7 @@ class RecoleccionSeeder extends Seeder
         Recoleccion::create([
             'cosecha_id' => Cosecha::where('nombre_cosecha', 'Cosecha Otoño-Invierno 2025')->first()->id,
             'user_id' => User::where('username', 'juanperez')->first()->id,
-            'fecha' => '2026-03-14',
+            'fecha' => '2026-03-15',
             'num_cajas' => 10,
             'kilos_caja' => 2.5,
             'notas' => 'Poco rendimiento.',
