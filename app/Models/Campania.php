@@ -25,8 +25,8 @@ class Campania extends Model
     ];
 
     protected $casts = [
-        'fecha_inicio' => 'date:d-m-Y',
-        'fecha_fin' => 'date:d-m-Y',
+        'fecha_inicio' => 'date:Y-m-d',
+        'fecha_fin' => 'date:Y-m-d',
     ];
 
     public $timestamps = false;

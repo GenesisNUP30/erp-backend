@@ -34,7 +34,7 @@ class Pago extends Model
     protected function casts(): array
     {
         return [
-            'fecha_pago' => 'date:d-m-Y',
+            'fecha_pago' => 'date:Y-m-d',
             'total_horas' => 'decimal:2',
             'monto_total' => 'decimal:2',
         ];

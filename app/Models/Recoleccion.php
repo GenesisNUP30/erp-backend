@@ -34,7 +34,7 @@ class Recoleccion extends Model
     protected function casts(): array
     {
         return [
-            'fecha' => 'date:d-m-Y',
+            'fecha' => 'date:Y-m-d',
         ];
     }
 
@@ -42,7 +42,7 @@ class Recoleccion extends Model
 
     // Relaciones
     // =========================================================================
-    
+
     public function cosecha()
     {
         return $this->belongsTo(Cosecha::class);

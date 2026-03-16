@@ -33,8 +33,8 @@ class Cosecha extends Model
     protected function casts(): array
     {
         return [
-            'fecha_inicio' => 'date:d-m-Y',
-            'fecha_fin' => 'date:d-m-Y',
+            'fecha_inicio' => 'date:Y-m-d',
+            'fecha_fin' => 'date:Y-m-d',
         ];
     }
 

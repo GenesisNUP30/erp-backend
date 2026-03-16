@@ -18,16 +18,26 @@ class AuthController extends Controller
 
         $user = User::where('username', $request->username)->first();
 
+        // Comprobar si el usuario existe y la contraseña es correcta
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
-                'error' => 'Invalid username or password'
+                'error' => 'Las credenciales son incorrectas.'
             ], 401);
         }
 
-        // Generacion de token stateless
-        $token = $user->createToken('token-usuario')->plainTextToken;
+        // Comprobar si el usuario está de baja
+        if ($user->fecha_baja !== null) {
+            return response()->json([
+                'message' => 'Este usuario ya no tiene acceso al sistema.'
+            ], 403);
+        }
 
+        // Generacion de token stateless
+        $token = $user->createToken('access_token')->plainTextToken;
+
+        // Devolver la respuesta con el token y datos básicos del usuario
         return response()->json([
+            'message' => 'Inicio de sesión exitoso.',
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -36,6 +46,15 @@ class AuthController extends Controller
                 'fecha_alta' => $user->fecha_alta,
             ],
             'token' => $token
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'message' => 'Sesión cerrada correctamente.'
         ]);
     }
 }

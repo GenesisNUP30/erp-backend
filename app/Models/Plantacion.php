@@ -35,8 +35,8 @@ class Plantacion extends Model
     protected function casts(): array
     {
         return [
-            'fecha_siembra' => 'date:d-m-Y',
-            'fecha_fin' => 'date:d-m-Y',
+            'fecha_siembra' => 'date:Y-m-d',
+            'fecha_fin' => 'date:Y-m-d',
         ];
     }
 

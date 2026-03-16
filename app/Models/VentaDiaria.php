@@ -36,7 +36,7 @@ class VentaDiaria extends Model
     protected function casts(): array
     {
         return [
-            'fecha' => 'date:d-m-Y',
+            'fecha' => 'date:Y-m-d',
             'kilos_primera' => 'decimal:2',
             'precio_primera' => 'decimal:2',
             'kilos_industria' => 'decimal:2',

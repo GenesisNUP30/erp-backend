@@ -50,8 +50,8 @@ class User extends Authenticatable
     {
         return [
             'password' => 'hashed',
-            'fecha_alta' => 'date:d-m-Y',
-            'fecha_baja' => 'date:d-m-Y',
+            'fecha_alta' => 'date:Y-m-d',
+            'fecha_baja' => 'date:Y-m-d',
             'email_verified_at' => 'datetime',
         ];
     }
