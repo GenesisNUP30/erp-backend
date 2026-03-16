@@ -11,11 +11,7 @@ class Recoleccion extends Model
 
     protected $table = 'recolecciones';
 
-    /**
-     * Campos que se le permite almacenamiento masivo en la base de datos
-     *
-     * @var list<string>
-     */
+    // Campos que se le permite almacenamiento masivo en la base de datos
     protected $fillable = [
         'cosecha_id',
         'user_id',
@@ -26,11 +22,7 @@ class Recoleccion extends Model
         'estado',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    // Conversión aiutomática de tipos de datos
     protected function casts(): array
     {
         return [
@@ -41,8 +33,6 @@ class Recoleccion extends Model
     public $timestamps = false;
 
     // Relaciones
-    // =========================================================================
-
     public function cosecha()
     {
         return $this->belongsTo(Cosecha::class);
@@ -53,3 +43,5 @@ class Recoleccion extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 }
+
+
