@@ -12,7 +12,7 @@ class Recoleccion extends Model
     protected $table = 'recolecciones';
 
     /**
-     * The attributes that are mass assignable.
+     * Campos que se le permite almacenamiento masivo en la base de datos
      *
      * @var list<string>
      */
@@ -40,6 +40,9 @@ class Recoleccion extends Model
 
     public $timestamps = false;
 
+    // Relaciones
+    // =========================================================================
+    
     public function cosecha()
     {
         return $this->belongsTo(Cosecha::class);

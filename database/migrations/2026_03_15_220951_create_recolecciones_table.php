@@ -24,10 +24,10 @@ return new class extends Migration
             $table->integer('num_cajas');
             // Peso en kilos por cada caja
             $table->decimal('kilos_caja', 8, 2);
-            // Notas u observaciones adicionales
-            $table->text('notas')->nullable();
             // Estado de la recolección
             $table->enum('estado', ['registrada', 'verificada', 'anulada'])->default('registrada');
+            // Notas u observaciones adicionales
+            $table->text('notas')->nullable();
         });
     }
 
@@ -39,6 +39,3 @@ return new class extends Migration
         Schema::dropIfExists('recolecciones');
     }
 };
-
-
-

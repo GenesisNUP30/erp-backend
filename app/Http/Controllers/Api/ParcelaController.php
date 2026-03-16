@@ -14,7 +14,6 @@ class ParcelaController extends Controller
     public function index(Request $request)
     {
         $parcelas = Parcela::withCount('plantaciones')
-            ->estado($request->query('estado'))
             ->orderBy('nombre')
             ->paginate(10);
 

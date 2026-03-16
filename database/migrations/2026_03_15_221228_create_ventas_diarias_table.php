@@ -20,8 +20,8 @@ return new class extends Migration
             $table->decimal('kilos_industria', 10, 2);
             $table->decimal('precio_industria', 8, 2);
             $table->decimal('importe_total', 12, 2);
-            $table->text('observaciones')->nullable();
             $table->enum('estado', ['pendiente', 'cobrada', 'anulada'])->default('pendiente');
+            $table->text('observaciones')->nullable();
         });
     }
 

@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('tipo');
             $table->date('fecha');
             $table->decimal('horas_estimadas', 8, 2);
-            $table->text('descripcion')->nullable();
             $table->enum('estado', ['pendiente', 'en_progreso', 'finalizada', 'cancelada'])
                 ->default('pendiente');
+            $table->text('descripcion')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
