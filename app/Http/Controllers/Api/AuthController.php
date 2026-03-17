@@ -12,11 +12,15 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'username' => 'required',
-            'password' => 'required',
+            'login'    => 'required|string',
+            'password' => 'required|string',
         ]);
 
-        $user = User::where('username', $request->username)->first();
+        $loginValue = $request->input('login');
+
+        $fieldType = filter_var($loginValue, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+        $user = User::where($fieldType, $loginValue)->first();
 
         // Comprobar si el usuario existe y la contraseña es correcta
         if (!$user || !Hash::check($request->password, $user->password)) {
@@ -38,14 +42,16 @@ class AuthController extends Controller
         // Devolver la respuesta con el token y datos básicos del usuario
         return response()->json([
             'message' => 'Inicio de sesión exitoso.',
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'username' => $user->username,
-                'rol' => $user->rol,
-                'fecha_alta' => $user->fecha_alta,
-            ],
-            'token' => $token
+            'data' => [
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'username' => $user->username,
+                    'rol' => $user->rol,
+                    'fecha_alta' => $user->fecha_alta,
+                ],
+                'token' => $token
+            ]
         ]);
     }
 
