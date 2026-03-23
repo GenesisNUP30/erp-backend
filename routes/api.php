@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\ParcelaController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -13,6 +14,8 @@ Route::get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/logout', [AuthController::class, 'logout']);
+
+Route::get('/dashboard', [DashboardController::class, 'index']);
 
 Route::apiResource('/trabajadores', UserController::class);
 
