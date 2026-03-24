@@ -14,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $trabajadores = User::where('rol', '!=', 'admin')
+        $trabajadores = User::where('rol', '!=', 'administrador')
             ->select('id', 'name', 'username', 'dni', 'telefono', 'rol', 'fecha_alta', 'fecha_baja')
             ->get();
 
@@ -134,7 +134,7 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $trabajador = User::where('rol', '!=', 'admin')
+        $trabajador = User::where('rol', '!=', 'administrador')
             ->where('id', $id)
             ->first();
 

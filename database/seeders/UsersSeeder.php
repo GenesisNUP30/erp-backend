@@ -25,7 +25,7 @@ class UsersSeeder extends Seeder
             'password' => Hash::make('admin1234'),
             'dni' => '22636097A',
             'telefono' => '600000000',
-            'rol' => 'admin',
+            'rol' => 'administrador',
             'fecha_alta' => '2024-01-11',
             'fecha_baja' => null,
             'remember_token' => Str::random(20),

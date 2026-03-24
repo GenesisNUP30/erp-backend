@@ -19,7 +19,7 @@ class DashboardController extends Controller
         ];
 
         // 🔵 ADMIN
-        if ($user->rol === 'admin') {
+        if ($user->rol === 'administrador') {
 
             $kilosHoy = DB::table('erp_recolecciones')
                 ->whereDate('fecha', $hoy)

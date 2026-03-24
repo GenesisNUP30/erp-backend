@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('dni')->unique()->index();
             $table->string('telefono')->nullable();
-            $table->enum('rol', ['admin', 'encargado', 'recolector'])->default('recolector');
+            $table->enum('rol', ['administrador', 'encargado', 'recolector'])->default('recolector');
             $table->date('fecha_alta')->useCurrent();
             $table->date('fecha_baja')->nullable();
             $table->rememberToken();
