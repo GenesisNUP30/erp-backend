@@ -10,8 +10,11 @@ class UserPolicy
     /**
      * El Admin y el Encargado pueden ver la lista y el detalle.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(?User $user): bool
     {
+        // De momento permitimos siempre el acceso para poder ver la api
+        if (is_null($user)) return true;
+
         return in_array($user->rol, ['administrador', 'encargado']);
     }
 

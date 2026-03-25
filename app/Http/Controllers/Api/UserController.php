@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Http\Requests\WorkerRequest;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Muestra la lista de trabajadores (usuarios no administradores).
      */
