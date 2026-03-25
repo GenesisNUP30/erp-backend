@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Http\Requests\WorkerRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,6 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', User::class);
+
         $trabajadores = User::where('rol', '!=', 'administrador')
             ->select('id', 'name', 'username', 'dni', 'telefono', 'rol', 'fecha_alta', 'fecha_baja')
             ->get();
@@ -28,31 +31,15 @@ class UserController extends Controller
     /**
      * Permite crear un nuevo trabajador y validar los datos enviados.
      */
-    public function store(Request $request)
+    public function store(WorkerRequest $request)
     {
-        $request->validate([
-            'name' => 'required|required|string|max:60',
-            'username' => 'required|string|unique:users,username',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
-            'dni' => 'required|string|unique:users,dni|regex:/^[0-9]{8}[A-Z]$/',
-            'telefono' => 'required|string|regex:/^[67][0-9]{8}$/',
-            'rol' => 'required|in:encargado,recolector,administrador',
-            'fecha_alta' => 'required|date|before_or_equal:today',
-        ]);
+        $this->authorize('create', User::class);
 
-        $trabajador = User::create([
-            'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'email_verified_at' => now(),
-            'password' => Hash::make($request->password),
-            'dni' => $request->dni,
-            'telefono' => $request->telefono,
-            'rol' => $request->rol,
-            'fecha_alta' => $request->fecha_alta,
-            'fecha_baja' => $request->fecha_baja ?? null,
-        ]);
+        $data = $request->validated();
+        $data['password'] = Hash::make($data['password']);
+        $data['email_verified_at'] = now();
+
+        $trabajador = User::create($data);
 
         return response()->json([
             'success' => true,
@@ -66,17 +53,10 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $trabajador = User::where('rol', '!=', 'administrador')
-            ->where('id', $id)
-            ->select('id', 'name', 'username', 'dni', 'telefono', 'rol', 'fecha_alta', 'fecha_baja')
-            ->first();
+        // Buscamos al trabajador (solos los activos)
+        $trabajador = User::findOrFail($id);
 
-        if (!$trabajador) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No se encontró el trabajador solicitado'
-            ], 404);
-        }
+        $this->authorize('view', $trabajador);
 
         return response()->json([
             'success' => true,
@@ -87,37 +67,16 @@ class UserController extends Controller
     /**
      * Edita un trabajador existente y valida los datos enviados.
      */
-    public function update(Request $request, string $id)
+    public function update(WorkerRequest $request, string $id)
     {
-        $trabajador = User::where('rol', '!=', 'administrador')
-            ->where('id', $id)
-            ->first();
+        $trabajador = User::findOrFail($id);
+        $this->authorize('update', $trabajador);
 
-        if (!$trabajador) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No se encontró el trabajador solicitado'
-            ], 404);
-        }
-
-        $request->validate([
-            'name' => 'sometimes|required|string|max:60',
-            'username' => 'sometimes|required|string|unique:users,username,' . $id,
-            'email' => 'sometimes|nullable|email|unique:users,email,' . $id,
-            'password' => 'sometimes|nullable|string|min:8',
-            'dni' => 'sometimes|string|unique:users,dni,' . $id . '|regex:/^[0-9]{8}[A-Z]$/',
-            'telefono' => 'sometimes|string|regex:/^[67][0-9]{8}$/',
-            'rol' => 'sometimes|required|in:encargado,recolector,administrador',
-            'fecha_alta' => 'sometimes|required|date|before_or_equal:today',
-            'fecha_baja' => 'nullable|date|after_or_equal:fecha_alta',
-        ]);
-
-        // Actualización de campos
-        $data = $request->only(['name', 'username', 'email', 'dni', 'telefono', 'rol', 'fecha_alta', 'fecha_baja']);
-
-        // Si se proporciona nueva contraseña
-        if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
+        $data = $request->validated();
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
         }
 
         $trabajador->update($data);
@@ -134,16 +93,8 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $trabajador = User::where('rol', '!=', 'administrador')
-            ->where('id', $id)
-            ->first();
-
-        if (!$trabajador) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No se encontró el trabajador solicitado'
-            ], 404);
-        }
+        $trabajador = User::findOrFail($id);
+        $this->authorize('delete', $trabajador);
 
         $trabajador->delete();
 
