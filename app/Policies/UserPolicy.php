@@ -19,15 +19,18 @@ class UserPolicy
     }
 
     /**
- * Determina si el usuario puede ver un trabajador específico.
- */
-    public function view(User $user, User $worker): bool
+     * Determina si el usuario puede ver un trabajador específico.
+     */
+    public function view(?User $user, User $worker): bool
     {
+        // Si no hay usuario logueado (acceso libre para el profe)
+        if (is_null($user)) return true;
+
         if ($user->rol === 'administrador') return true;
-    
-    if ($user->rol === 'encargado') {
-        return $worker->rol !== 'administrador';
-    }
+
+        if ($user->rol === 'encargado') {
+            return $worker->rol !== 'administrador';
+        }
 
         return false;
     }
@@ -46,7 +49,7 @@ class UserPolicy
     public function update(User $user, User $worker): bool
     {
         if ($user->rol === 'administrador') return true;
-        
+
         if ($user->rol === 'encargado') {
             // No permitimos que un encargado edite a un administrador
             return $worker->rol !== 'administrador';

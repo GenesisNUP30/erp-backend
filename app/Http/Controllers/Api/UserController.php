@@ -19,7 +19,7 @@ class UserController extends Controller
         $this->authorize('viewAny', User::class);
 
         $trabajadores = User::where('rol', '!=', 'administrador')
-            ->select('id', 'name', 'username', 'dni', 'telefono', 'rol', 'fecha_alta', 'fecha_baja')
+            ->select('id', 'name', 'username', 'email', 'dni', 'telefono', 'rol', 'fecha_alta', 'fecha_baja')
             ->get();
 
         return response()->json([
