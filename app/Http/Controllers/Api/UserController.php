@@ -18,9 +18,25 @@ class UserController extends Controller
     {
         $this->authorize('viewAny', User::class);
 
-        $trabajadores = User::where('rol', '!=', 'administrador')
-            ->select('id', 'name', 'username', 'email', 'dni', 'telefono', 'rol', 'fecha_alta', 'fecha_baja')
-            ->get();
+        $userAutenticado = auth()->user();
+
+        // Iniciamos la consulta base
+        $query = User::select('id', 'name', 'username', 'email', 'dni', 'telefono', 'rol', 'fecha_alta', 'fecha_baja');
+
+        if ($userAutenticado) {
+            // 1. No mostrarse a sí mismo
+            $query->where('id', '!=', $userAutenticado->id);
+
+            // 2. Si es encargado, no puede ver a los administradores
+            if ($userAutenticado->rol === 'encargado') {
+                $query->where('rol', '!=', 'administrador');
+            }
+        } else {
+            // Si no hay nadie logueado (modo profesor), ocultamos los admin por seguridad
+            $query->where('rol', '!=', 'administrador');
+        }
+
+        $trabajadores = $query->get();
 
         return response()->json([
             'success' => true,
