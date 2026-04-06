@@ -69,7 +69,7 @@ class WorkerRequest extends FormRequest
                     if (!$isPost && $userAutenticado->rol === 'encargado') {
                         $originalWorker = \App\Models\User::find($workerId);
                         if ($originalWorker && $value !== $originalWorker->rol) {
-                            $fail('Como encargado, no tienes permiso para modificar el rango de los trabajadores.');
+                            $fail('Como encargado, no tienes permiso para modificar el rol de los trabajadores.');
                         }
                     }
                 }
