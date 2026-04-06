@@ -7,17 +7,23 @@ use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/user', function (Request $request) { return $request->user(); });
+});
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::post('/logout', [AuthController::class, 'logout']);
-
+// Rutas publicas para poder ver los datos de la api
 Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::get('/trabajadores', [UserController::class, 'index']);
+Route::get('/trabajadores/{id}', [UserController::class, 'show']);
 
-// Route::apiResource('/trabajadores', UserController::class);
-Route::middleware('auth:sanctum')->get('/trabajadores', [UserController::class, 'index']);
+// Route::apiResource('/parcelas', ParcelaController::class);
 
-Route::apiResource('/parcelas', ParcelaController::class);
+// Rutas protegidas, solo para usuarios autenticados
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/trabajadores', [UserController::class, 'store']);
+    Route::put('/trabajadores/{id}', [UserController::class, 'update']);
+    Route::delete('/trabajadores/{id}', [UserController::class, 'destroy']);
+});
