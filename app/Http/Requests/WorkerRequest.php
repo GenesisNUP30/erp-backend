@@ -24,7 +24,8 @@ class WorkerRequest extends FormRequest
     public function rules(): array
     {
         $isPost = $this->isMethod('post');
-        $workerId = $this->route('trabajadore');
+        // Intenta la ruta /trabajadore,  luego 'id', y si no, usa el valor de la ruta
+        $workerId = $this->route('trabajadore') ?? $this->route('id');
         $userAutenticado = auth('sanctum')->user();
 
         return [
