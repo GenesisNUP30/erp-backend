@@ -17,6 +17,7 @@ Route::post('/logout', [AuthController::class, 'logout']);
 
 Route::get('/dashboard', [DashboardController::class, 'index']);
 
-Route::apiResource('/trabajadores', UserController::class);
+// Route::apiResource('/trabajadores', UserController::class);
+Route::middleware('auth:sanctum')->get('/trabajadores', [UserController::class, 'index']);
 
 Route::apiResource('/parcelas', ParcelaController::class);

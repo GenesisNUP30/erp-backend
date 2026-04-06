@@ -16,11 +16,30 @@ class UserController extends Controller
      */
     public function index()
     {
+        // Se intenta identificar al usuario del token de forma manual
+        $userAutenticado = auth('sanctum')->user();
+
+        // La Policy ya tiene el (?User $user), así que no fallará si es null
         $this->authorize('viewAny', User::class);
 
-        $trabajadores = User::where('rol', '!=', 'administrador')
-            ->select('id', 'name', 'username', 'email', 'dni', 'telefono', 'rol', 'fecha_alta', 'fecha_baja')
-            ->get();
+        // Iniciamos la consulta base
+        $query = User::select('id', 'name', 'username', 'email', 'dni', 'telefono', 'rol', 'fecha_alta', 'fecha_baja');
+
+        // Si hay un usuario logueado, se filtran los trabajadores
+        if ($userAutenticado) {
+            // 1. No mostrarse a sí mismo
+            $query->where('id', '!=', $userAutenticado->id);
+
+            // Si es encargado, no puede ver a los administradores
+            if ($userAutenticado->rol === 'encargado') {
+                $query->where('rol', '!=', 'administrador');
+            }
+        } else {
+            // Si no hay nadie logueado (modo profesor), ocultamos los admin por seguridad
+            $query->where('rol', '!=', 'administrador');
+        }
+
+        $trabajadores = $query->get();
 
         return response()->json([
             'success' => true,
