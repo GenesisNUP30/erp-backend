@@ -81,10 +81,16 @@ class WorkerRequest extends FormRequest
     public function messages()
     {
         return [
-            'username.required_without' => 'Debes rellenar el nombre de usuario si el email está vacío.',
-            'email.required_without' => 'Debes rellenar el email si el nombre de usuario está vacío.',
-            'dni.required' => 'El DNI es obligatorio.',
             'name.required' => 'El nombre completo es obligatorio.',
+            'dni.required' => 'El DNI es obligatorio.',
+            'dni.unique' => 'Este DNI ya está registrado en el sistema.',
+            'username.required_without' => 'Debes rellenar el nombre de usuario si el email está vacío.',
+            'username.unique' => 'Este nombre de usuario ya está en uso.',
+            'email.required_without' => 'Debes rellenar el email si el nombre de usuario está vacío.',
+            'email.email' => 'El formato del email no es válido.',
+            'email.unique' => 'Este correo electrónico ya está registrado.',
+            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+            'telefono.regex' => 'El formato del teléfono no es válido (debe empezar por 6 o 7).',
         ];
     }
 }
