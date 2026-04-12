@@ -23,7 +23,7 @@ class UserController extends Controller
         $this->authorize('viewAny', User::class);
 
         // Iniciamos la consulta base
-        $query = User::select('id', 'name', 'username', 'email', 'dni', 'telefono', 'rol', 'fecha_alta', 'fecha_baja');
+        $query = User::select('id', 'name', 'username', 'email', 'dni', 'telefono', 'rol', 'estado','fecha_alta', 'fecha_baja');
 
         // Si hay un usuario logueado, se filtran los trabajadores
         if ($userAutenticado) {
@@ -93,6 +93,12 @@ class UserController extends Controller
         $this->authorize('update', $trabajador);
 
         $data = $request->validated();
+
+        // Lógica de limpieza: Si el estado es activo, forzamos fecha_baja a null
+        if ($data['estado'] === 'activo') {
+            $data['fecha_baja'] = null;
+        }
+
         if (!empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         } else {
