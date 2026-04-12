@@ -28,6 +28,7 @@ class User extends Authenticatable
         'dni',
         'telefono',
         'rol',
+        'estado',
         'fecha_alta',
         'fecha_baja',
     ];

@@ -39,6 +39,16 @@ class WorkerRequest extends FormRequest
             'telefono' => 'required|string|regex:/^[67][0-9]{8}$/',
             'fecha_alta' => 'required|date|before_or_equal:today',
 
+            'estado' => 'required|in:activo,inactivo',
+
+            // FECHA BAJA: Obligatoria solo si estado es inactivo
+            'fecha_baja' => [
+                'nullable',
+                'required_if:estado,inactivo',
+                'date',
+                'after_or_equal:fecha_alta'
+            ],
+
             // Campos opcionales con lógica y validación si se envían
             'username' => [
                 'required_without:email', // Obligatorio si no hay email
