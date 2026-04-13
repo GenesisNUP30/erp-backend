@@ -34,14 +34,7 @@ class ParcelaController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nombre' => 'required|string|max:255|unique:parcelas,nombre',
-            'superficie_hectareas' => 'required|numeric|min:0',
-            'ubicacion' => 'required|string|max:255',
-            'estado' => 'required|in:activa,inactiva,mantenimiento'
-        ]);
-
-        $parcela = Parcela::create($validated);
+        $parcela = Parcela::create($request->validated());
 
         return response()->json([
             'success' => true,
@@ -89,14 +82,7 @@ class ParcelaController extends Controller
             ], 404);
         }
 
-        $validated = $request->validate([
-            'nombre' => 'sometimes|required|string|max:255|unique:parcelas,nombre,' . $id,
-            'superficie_hectareas' => 'sometimes|required|numeric|min:0',
-            'ubicacion' => 'sometimes|required|string|max:255',
-            'estado' => 'sometimes|required|in:activa,inactiva,mantenimiento'
-        ]);
-
-        $parcela->update($validated);
+        $parcela->update($request->validated());
 
         return response()->json([
             'success' => true,
