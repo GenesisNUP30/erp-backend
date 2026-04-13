@@ -3,16 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ParcelaRequest;
 use App\Models\Parcela;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ParcelaController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Lista las parcelas con filtros y paginación
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Parcela::class);
+
         $parcelas = Parcela::withCount('plantaciones')
             ->orderBy('nombre')
             ->paginate(10);
@@ -32,16 +37,11 @@ class ParcelaController extends Controller
     /**
      * Crea una nueva parcela
      */
-    public function store(Request $request)
+    public function store(ParcelaRequest $request)
     {
-        $validated = $request->validate([
-            'nombre' => 'required|string|max:255|unique:parcelas,nombre',
-            'superficie_hectareas' => 'required|numeric|min:0',
-            'ubicacion' => 'required|string|max:255',
-            'estado' => 'required|in:activa,inactiva,mantenimiento'
-        ]);
+        $this->authorize('create', Parcela::class);
 
-        $parcela = Parcela::create($validated);
+        $parcela = Parcela::create($request->validated());
 
         return response()->json([
             'success' => true,
@@ -60,7 +60,9 @@ class ParcelaController extends Controller
                 $query->with('variedad:id,nombre')
                     ->orderBy('fecha_siembra', 'desc');
             }
-        ])->find($id);
+        ])->findOrFail($id);
+
+        $this->authorize('view', $parcela);
 
         if (!$parcela) {
             return response()->json([
@@ -78,9 +80,11 @@ class ParcelaController extends Controller
     /**
      * Actualiza una parcela existente
      */
-    public function update(Request $request, string $id)
+    public function update(ParcelaRequest $request, string $id)
     {
-        $parcela = Parcela::find($id);
+        $parcela = Parcela::findOrFail($id);
+
+        $this->authorize('update', $parcela);
 
         if (!$parcela) {
             return response()->json([
@@ -89,14 +93,7 @@ class ParcelaController extends Controller
             ], 404);
         }
 
-        $validated = $request->validate([
-            'nombre' => 'sometimes|required|string|max:255|unique:parcelas,nombre,' . $id,
-            'superficie_hectareas' => 'sometimes|required|numeric|min:0',
-            'ubicacion' => 'sometimes|required|string|max:255',
-            'estado' => 'sometimes|required|in:activa,inactiva,mantenimiento'
-        ]);
-
-        $parcela->update($validated);
+        $parcela->update($request->validated());
 
         return response()->json([
             'success' => true,
@@ -110,7 +107,9 @@ class ParcelaController extends Controller
      */
     public function destroy(string $id)
     {
-        $parcela = Parcela::withCount('plantaciones')->find($id);
+        $parcela = Parcela::withCount('plantaciones')->findOrFail($id);
+
+        $this->authorize('delete', $parcela);
 
         if (!$parcela) {
             return response()->json([

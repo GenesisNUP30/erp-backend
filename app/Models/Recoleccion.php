@@ -37,11 +37,9 @@ class Recoleccion extends Model
     {
         return $this->belongsTo(Cosecha::class);
     }
-
+    //TODO: Asegurar que el borrado de un usuario no afecta al pago
     public function recolector()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 }
-
-
