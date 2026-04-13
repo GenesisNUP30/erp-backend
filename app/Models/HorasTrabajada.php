@@ -42,7 +42,7 @@ class HorasTrabajada extends Model
     }
 
     public $timestamps = false;
-
+    //TODO: Asegurar que el borrado de un usuario no afecta al pago
     public function trabajador()
     {
         return $this->belongsTo(User::class, 'user_id');

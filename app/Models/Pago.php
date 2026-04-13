@@ -46,7 +46,7 @@ class Pago extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
+    //TODO: Asegurar que el borrado de un usuario no afecta al pago
     public function horasTrabajadas()
     {
         return $this->hasMany(HorasTrabajada::class);
