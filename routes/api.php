@@ -19,11 +19,16 @@ Route::get('/dashboard', [DashboardController::class, 'index']);
 Route::get('/trabajadores', [UserController::class, 'index']);
 Route::get('/trabajadores/{id}', [UserController::class, 'show']);
 
-// Route::apiResource('/parcelas', ParcelaController::class);
+Route::get('/parcelas', [ParcelaController::class, 'index']);
+Route::get('/parcelas/{id}', [ParcelaController::class, 'show']);
 
 // Rutas protegidas, solo para usuarios autenticados
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/trabajadores', [UserController::class, 'store']);
     Route::put('/trabajadores/{id}', [UserController::class, 'update']);
     Route::delete('/trabajadores/{id}', [UserController::class, 'destroy']);
+
+    Route::post('/parcelas', [ParcelaController::class, 'store']);
+    Route::put('/parcelas/{id}', [ParcelaController::class, 'update']);
+    Route::delete('/parcelas/{id}', [ParcelaController::class, 'destroy']);
 });
