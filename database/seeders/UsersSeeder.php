@@ -70,6 +70,7 @@ class UsersSeeder extends Seeder
             'dni' => '80851996G',
             'telefono' => '645678901',
             'rol' => 'recolector',
+            'estado' => 'inactivo',
             'fecha_alta' => '2024-04-05',
             'fecha_baja' => '2025-01-20',
             'remember_token' => Str::random(20),

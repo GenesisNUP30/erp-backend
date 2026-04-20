@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('fecha_inicio');
             $table->date('fecha_fin')->nullable();
             $table->enum('estado', ['en_crecimiento', 'en_recoleccion', 'en_poda', 'finalizada']);
+            $table->softDeletes();
         });
     }
 

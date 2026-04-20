@@ -22,6 +22,7 @@ return new class extends Migration
             $table->decimal('importe_total', 12, 2);
             $table->enum('estado', ['pendiente', 'cobrada', 'anulada'])->default('pendiente');
             $table->text('observaciones')->nullable();
+            $table->softDeletes();
         });
     }
 
