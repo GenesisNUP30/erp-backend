@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('precio_hora', 10, 2);
             $table->string('tipo_trabajo');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->index('fecha');
         });

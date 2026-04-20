@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('fecha_fin')->nullable();
             $table->text('descripcion')->nullable();
             $table->enum('estado', ['activa', 'finalizada', 'planificada']);
+            $table->softDeletes();
         });
     }
 

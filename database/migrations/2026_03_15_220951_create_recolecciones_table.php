@@ -28,6 +28,7 @@ return new class extends Migration
             $table->enum('estado', ['registrada', 'verificada', 'anulada'])->default('registrada');
             // Notas u observaciones adicionales
             $table->text('notas')->nullable();
+            $table->softDeletes();
         });
     }
 

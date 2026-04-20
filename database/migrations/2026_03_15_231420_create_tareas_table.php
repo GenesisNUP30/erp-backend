@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('fecha');
             $table->decimal('horas_estimadas', 8, 2);
             $table->enum('estado', ['pendiente', 'en_progreso', 'finalizada', 'cancelada'])
-                ->default('pendiente');
+                ->default('pendiente')->index();
             $table->text('descripcion')->nullable();
             $table->timestamps();
             $table->softDeletes();

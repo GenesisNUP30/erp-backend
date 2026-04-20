@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('estado', ['borrador', 'validado', 'pagado', 'archivado']);
             $table->date('fecha_pago')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             // Índices solicitados
             $table->index(['mes', 'anio']);

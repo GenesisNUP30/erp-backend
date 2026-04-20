@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('dni')->unique()->index();
             $table->string('telefono')->nullable();
             $table->enum('rol', ['administrador', 'encargado', 'recolector'])->default('recolector');
+            $table->enum('estado', ['activo', 'inactivo'])->default('activo')->index();
             $table->date('fecha_alta')->useCurrent();
             $table->date('fecha_baja')->nullable();
             $table->rememberToken();

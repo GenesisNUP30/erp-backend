@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('importe', 12, 2);
             $table->decimal('horas_estimadas', 8, 2)->nullable();
             $table->enum('estado', ['pendiente', 'pagado', 'anulado'])->default('pendiente');
+            $table->softDeletes();
         });
     }
 

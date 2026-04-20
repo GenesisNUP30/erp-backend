@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('fecha_fin');
             $table->decimal('litros_consumidos', 12, 2);
             $table->enum('estado', ['estimado', 'real', 'anulado'])->default('real');
+            $table->softDeletes();
         });
     }
 
