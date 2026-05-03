@@ -38,11 +38,11 @@ class CampaniaPolicy
     }
 
     /**
-     * Admin puede todo. Encargado puede editar.
+     *Solo el Admin puede editar campañas.
      */
     public function update(User $user, Campania $campania): bool
     {
-        return in_array($user->rol, ['administrador', 'encargado']);
+        return $user->rol === 'administrador';
     }
 
     /**
@@ -54,6 +54,11 @@ class CampaniaPolicy
     }
 
     public function restore(User $user, Campania $campania): bool
+    {
+        return false;
+    }
+
+    public function forceDelete(User $user, Campania $campania): bool
     {
         return false;
     }
