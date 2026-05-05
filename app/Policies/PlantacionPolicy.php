@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Parcela;
+use App\Models\Plantacion;
 use App\Models\User;
 
-class ParcelaPolicy
+class PlantacionPolicy
 {
     /**
      * Admin y Encargado pueden ver el listado.
@@ -22,7 +22,7 @@ class ParcelaPolicy
      * Admin y Encargado pueden ver el detalle.
      * Sin token el profesor también puede ver.
      */
-    public function view(?User $user, Parcela $parcela): bool
+    public function view(?User $user, Plantacion $plantacion): bool
     {
         if (is_null($user)) return true;
 
@@ -30,7 +30,7 @@ class ParcelaPolicy
     }
 
     /**
-     * Solo el Admin puede crear parcelas.
+     * Solo el Admin puede crear plantaciones.
      */
     public function create(User $user): bool
     {
@@ -40,7 +40,7 @@ class ParcelaPolicy
     /**
      * Admin puede todo. Encargado puede editar.
      */
-    public function update(User $user, Parcela $parcela): bool
+    public function update(User $user, Plantacion $plantacion): bool
     {
         return in_array($user->rol, ['administrador', 'encargado']);
     }
@@ -48,17 +48,17 @@ class ParcelaPolicy
     /**
      * Solo el Admin puede borrar.
      */
-    public function delete(User $user, Parcela $parcela): bool
+    public function delete(User $user, Plantacion $plantacion): bool
     {
         return $user->rol === 'administrador';
     }
 
-    public function restore(User $user, Parcela $parcela): bool
+    public function restore(User $user, Plantacion $plantacion): bool
     {
         return false;
     }
 
-    public function forceDelete(User $user, Parcela $parcela): bool
+    public function forceDelete(User $user, Plantacion $plantacion): bool
     {
         return false;
     }
