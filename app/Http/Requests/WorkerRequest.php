@@ -84,7 +84,6 @@ class WorkerRequest extends FormRequest
                     }
                 }
             ],
-            'fecha_baja' => 'nullable|date|after_or_equal:fecha_alta',
         ];
     }
 
@@ -101,7 +100,7 @@ class WorkerRequest extends FormRequest
             'email.unique' => 'Este correo electrónico ya está registrado.',
             'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
             'telefono.regex' => 'El formato del teléfono no es válido (debe empezar por 6 o 7).',
-            //TODO: Agregar mensaje de fecha_baja debe ser mayor a fecha_alta
+            'fecha_baja.after_or_equal' => 'La fecha de baja debe ser posterior o igual a la fecha de alta.',
         ];
     }
 }
