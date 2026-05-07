@@ -27,6 +27,8 @@ class Plantacion extends Model
         'estado',
     ];
 
+    public $timestamps = false;
+
     /**
      * The attributes that should be cast.
      *

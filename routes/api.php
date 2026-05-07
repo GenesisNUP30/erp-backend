@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\ParcelaController;
 use App\Http\Controllers\Api\CampaniaController;
+use App\Http\Controllers\Api\PlantacionController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,10 @@ Route::get('/parcelas/{id}', [ParcelaController::class, 'show']);
 Route::get('/campanias', [CampaniaController::class, 'index']);
 Route::get('/campanias/{id}', [CampaniaController::class, 'show']);
 
+// PLANTACIONES
+Route::get('/plantaciones', [PlantacionController::class, 'index']);
+Route::get('/plantaciones/{id}', [PlantacionController::class, 'show']);
+
 // Rutas protegidas, solo para usuarios autenticados
 Route::middleware('auth:sanctum')->group(function () {
     // TRABAJADORES
@@ -47,4 +52,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/campanias', [CampaniaController::class, 'store']);
     Route::put('/campanias/{id}', [CampaniaController::class, 'update']);
     Route::delete('/campanias/{id}', [CampaniaController::class, 'destroy']);
+
+    // PLANTACIONES
+    Route::post('/plantaciones', [PlantacionController::class, 'store']);
+    Route::put('/plantaciones/{id}', [PlantacionController::class, 'update']);
+    Route::delete('/plantaciones/{id}', [PlantacionController::class, 'destroy']);
 });
