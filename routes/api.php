@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ParcelaController;
 use App\Http\Controllers\Api\CampaniaController;
 use App\Http\Controllers\Api\PlantacionController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\VariedadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,10 @@ Route::get('/parcelas/{id}', [ParcelaController::class, 'show']);
 Route::get('/campanias', [CampaniaController::class, 'index']);
 Route::get('/campanias/{id}', [CampaniaController::class, 'show']);
 
+// VARIEDADES
+Route::get('/variedades', [VariedadController::class, 'index']);
+Route::get('/variedades/{id}', [VariedadController::class, 'show']);
+
 // PLANTACIONES
 Route::get('/plantaciones', [PlantacionController::class, 'index']);
 Route::get('/plantaciones/{id}', [PlantacionController::class, 'show']);
@@ -52,6 +57,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/campanias', [CampaniaController::class, 'store']);
     Route::put('/campanias/{id}', [CampaniaController::class, 'update']);
     Route::delete('/campanias/{id}', [CampaniaController::class, 'destroy']);
+
+    // VARIEDADES
+    Route::post('/variedades', [VariedadController::class, 'store']);
+    Route::put('/variedades/{id}', [VariedadController::class, 'update']);
+    Route::delete('/variedades/{id}', [VariedadController::class, 'destroy']);
 
     // PLANTACIONES
     Route::post('/plantaciones', [PlantacionController::class, 'store']);
