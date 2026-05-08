@@ -72,13 +72,6 @@ class VariedadController extends Controller
 
         $variedad->update($request->validated());
 
-        if (!$variedad) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Variedad no encontrada'
-            ], 404);
-        }
-        
         return response()->json([
             'success' => true, 
             'message' => 'Variedad actualizada',
@@ -91,13 +84,6 @@ class VariedadController extends Controller
         $variedad = Variedad::withCount('plantaciones')->findOrFail($id);
 
         $this->authorize('delete', $variedad);
-
-        if (!$variedad) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Variedad no encontrada'
-            ], 404);
-        }
 
         // BLOQUEO DE BORRADO: No permitimos borrar si ya hay plantas de este tipo en el campo
         if ($variedad->plantaciones_count > 0) {
