@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('variedades', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('tipo');
+            $table->enum('tipo', ['remontante', 'no_remontante'])->default('remontante');
             $table->text('descripcion')->nullable();
             $table->softDeletes();
         });
