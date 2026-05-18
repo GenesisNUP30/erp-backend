@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Http\Requests\WorkerRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -14,7 +15,7 @@ class UserController extends Controller
     /**
      * Muestra la lista de trabajadores (usuarios no administradores).
      */
-    public function index()
+    public function index(Request $request)
     {
         // Se intenta identificar al usuario del token de forma manual
         $userAutenticado = auth('sanctum')->user();
@@ -23,7 +24,7 @@ class UserController extends Controller
         $this->authorize('viewAny', User::class);
 
         // Iniciamos la consulta base
-        $query = User::select('id', 'name', 'username', 'email', 'dni', 'telefono', 'rol', 'estado','fecha_alta', 'fecha_baja');
+        $query = User::select('id', 'name', 'username', 'email', 'dni', 'telefono', 'rol', 'estado', 'fecha_alta', 'fecha_baja');
 
         // Si hay un usuario logueado, se filtran los trabajadores
         if ($userAutenticado) {
@@ -39,12 +40,17 @@ class UserController extends Controller
             $query->where('rol', '!=', 'administrador');
         }
 
-        $trabajadores = $query->get();
+        $trabajadores = $query->paginate($request->input('per_page', 5));
 
         return response()->json([
             'success' => true,
-            'data' => $trabajadores,
-            'count' => $trabajadores->count()
+            'data' => $trabajadores->items(),
+            'meta' => [
+                'current_page' => $trabajadores->currentPage(),
+                'last_page'    => $trabajadores->lastPage(),
+                'per_page'     => $trabajadores->perPage(),
+                'total'        => $trabajadores->total(),
+            ]
         ]);
     }
 
