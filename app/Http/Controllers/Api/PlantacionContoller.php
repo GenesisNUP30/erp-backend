@@ -20,7 +20,7 @@ class PlantacionController extends Controller
         $plantaciones = Plantacion::with(['parcela:id,nombre', 'variedad:id,nombre', 'campania:id,nombre'])
             ->withCount('cosechas')
             ->orderBy('fecha_siembra', 'desc')
-            ->paginate(5);
+            ->paginate($request->input('per_page', 5));
 
         return response()->json([
             'success' => true,

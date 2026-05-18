@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\VariedadRequest;
 use App\Models\Variedad;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 
 class VariedadController extends Controller
 {
@@ -13,14 +14,14 @@ class VariedadController extends Controller
     /**
      * Lista las variedades con filtros y paginación
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', Variedad::class);
         
         // Incluimos el conteo de plantaciones para informar al usuario
         $variedades = Variedad::withCount('plantaciones')
             ->orderBy('nombre')
-            ->paginate(5);
+            ->paginate($request->input('per_page', 5));
 
         return response()->json([
             'success' => true,
