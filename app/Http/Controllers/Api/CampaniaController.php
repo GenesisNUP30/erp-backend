@@ -18,7 +18,7 @@ class CampaniaController extends Controller
         $this->authorize('viewAny', Campania::class);
 
         $campanias = Campania::orderBy('fecha_inicio', 'desc')
-            ->paginate(5);
+            ->paginate($request->input('per_page', 5));
 
         return response()->json([
             'success' => true,

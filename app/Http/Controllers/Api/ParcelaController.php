@@ -20,7 +20,7 @@ class ParcelaController extends Controller
 
         $parcelas = Parcela::withCount('plantaciones')
             ->orderBy('nombre')
-            ->paginate(10);
+            ->paginate($request->input('per_page', 5));
 
         return response()->json([
             'success' => true,
