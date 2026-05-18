@@ -85,7 +85,7 @@ class VariedadController extends Controller
 
         $this->authorize('delete', $variedad);
 
-        // BLOQUEO DE BORRADO: No permitimos borrar si ya hay plantas de este tipo en el campo
+        // No permitimos borrar si ya hay plantas de este tipo en el campo
         if ($variedad->plantaciones_count > 0) {
             return response()->json([
                 'success' => false,
