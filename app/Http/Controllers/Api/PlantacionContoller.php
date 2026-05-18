@@ -59,13 +59,6 @@ class PlantacionController extends Controller
 
         $this->authorize('view', $plantacion);
 
-        if (!$plantacion) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Plantación no encontrada'
-            ], 404);
-        }
-
         return response()->json([
             'success' => true,
             'data' => $plantacion
@@ -80,13 +73,6 @@ class PlantacionController extends Controller
         $plantacion = Plantacion::findOrFail($id);
 
         $this->authorize('update', $plantacion);
-
-        if (!$plantacion) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Plantación no encontrada'
-            ], 404);
-        }
 
         $plantacion->update($request->validated());
 
