@@ -25,6 +25,11 @@ Route::get('/dashboard', [DashboardController::class, 'index']);
 Route::get('/trabajadores', [UserController::class, 'index']);
 Route::get('/trabajadores/{id}', [UserController::class, 'show']);
 
+// Rutas para selects de plantaciones
+Route::get('/parcelas/activas', [ParcelaController::class, 'activas']);
+Route::get('/variedades/todas', [VariedadController::class, 'todas']);
+Route::get('/campanias/activas', [CampaniaController::class, 'activas']);
+
 // PARCELAS
 Route::get('/parcelas', [ParcelaController::class, 'index']);
 Route::get('/parcelas/{id}', [ParcelaController::class, 'show']);

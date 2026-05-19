@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -131,5 +132,15 @@ class CampaniaController extends Controller
             'success' => true,
             'message' => 'Campaña eliminada correctamente'
         ]);
+    }
+
+    public function activas()
+    {
+        $campanias = Campania::where('estado', 'activa')
+            ->select('id', 'nombre')
+            ->orderBy('nombre')
+            ->get();
+
+        return response()->json(['success' => true, 'data' => $campanias]);
     }
 }

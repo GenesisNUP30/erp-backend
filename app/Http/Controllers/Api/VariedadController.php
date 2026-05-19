@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -17,7 +18,7 @@ class VariedadController extends Controller
     public function index(Request $request)
     {
         $this->authorize('viewAny', Variedad::class);
-        
+
         // Incluimos el conteo de plantaciones para informar al usuario
         $variedades = Variedad::withCount('plantaciones')
             ->orderBy('nombre')
@@ -41,11 +42,11 @@ class VariedadController extends Controller
     public function store(VariedadRequest $request)
     {
         $this->authorize('create', Variedad::class);
-        
+
         $variedad = Variedad::create($request->validated());
-        
+
         return response()->json([
-            'success' => true, 
+            'success' => true,
             'message' => 'Variedad creada correctamente',
             'data' => $variedad
         ], 201);
@@ -58,7 +59,7 @@ class VariedadController extends Controller
     {
         $variedad = Variedad::withCount('plantaciones')->findOrFail($id);
         $this->authorize('view', $variedad);
-        
+
         return response()->json(['success' => true, 'data' => $variedad]);
     }
 
@@ -74,7 +75,7 @@ class VariedadController extends Controller
         $variedad->update($request->validated());
 
         return response()->json([
-            'success' => true, 
+            'success' => true,
             'message' => 'Variedad actualizada',
             'data' => $variedad
         ]);
@@ -100,5 +101,14 @@ class VariedadController extends Controller
             'success' => true,
             'message' => 'Variedad eliminada con éxito'
         ]);
+    }
+
+    public function todas()
+    {
+        $variedades = Variedad::select('id', 'nombre', 'tipo')
+            ->orderBy('nombre')
+            ->get();
+
+        return response()->json(['success' => true, 'data' => $variedades]);
     }
 }
