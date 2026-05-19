@@ -132,4 +132,14 @@ class ParcelaController extends Controller
             'message' => 'Parcela eliminada correctamente'
         ]);
     }
+
+    public function activas()
+    {
+        $parcelas = Parcela::where('estado', 'activa')
+            ->select('id', 'nombre')
+            ->orderBy('nombre')
+            ->get();
+
+        return response()->json(['success' => true, 'data' => $parcelas]);
+    }
 }
