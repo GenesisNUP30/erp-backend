@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CampaniaRequest;
 use App\Models\Campania;
+use Dom\Element;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
@@ -134,12 +135,21 @@ class CampaniaController extends Controller
         ]);
     }
 
-    public function activas()
+    public function activas(Request $request)
     {
+        $currentId = $request->query('current_id');
+
         $campanias = Campania::where('estado', 'activa')
-            ->select('id', 'nombre')
+            ->when($currentId, function ($query) use ($currentId) {
+                $query->orWhere('id', $currentId);
+            })
+            ->select('id', 'nombre', 'estado')
             ->orderBy('nombre')
-            ->get();
+            ->get()
+            ->map(fn($c) => [
+                'id' => $c->id,
+                'nombre' => $c->estado === 'activa' ? $c->nombre : $c->nombre . ' (' . $c->estado . ')',
+            ]);
 
         return response()->json(['success' => true, 'data' => $campanias]);
     }

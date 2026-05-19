@@ -133,12 +133,21 @@ class ParcelaController extends Controller
         ]);
     }
 
-    public function activas()
+    public function activas(Request $request)
     {
-        $parcelas = Parcela::where('estado', 'activa')
-            ->select('id', 'nombre')
+        $currentId = $request->query('current_id');
+
+        $parcelas = Parcela::where('estado', 'activa')->when($currentId, function ($query) use ($currentId) {
+            // Incluimos el actual aunque no esté activo
+            $query->orWhere('id', $currentId);
+        })
+            ->select('id', 'nombre', 'estado')
             ->orderBy('nombre')
-            ->get();
+            ->get()
+            ->map(fn($p) => [
+                'id' => $p->id,
+                'nombre' => $p->estado === 'activa' ? $p->nombre : $p->nombre . ' (' . $p->estado . ')',
+            ]);
 
         return response()->json(['success' => true, 'data' => $parcelas]);
     }

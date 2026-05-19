@@ -15,7 +15,7 @@ class RecoleccionRequest extends FormRequest
     {
         return [
             'cosecha_id' => 'required|exists:cosechas,id',
-            'user_id'    => 'nullable|exists:users,id',
+            'user_id'    => 'required|exists:users,id',
             'fecha'      => 'required|date',
             'num_cajas'  => 'required|integer|min:1',
             'kilos_caja' => 'required|numeric|min:0.01',
@@ -29,6 +29,8 @@ class RecoleccionRequest extends FormRequest
         return [
             'cosecha_id.required' => 'La cosecha es obligatoria.',
             'cosecha_id.exists'   => 'La cosecha seleccionada no existe.',
+            'user_id.required'    => 'El recolector es obligatorio.',
+            'user_id.exists'      => 'El recolector seleccionado no existe.',
             'num_cajas.min'       => 'El número de cajas debe ser al menos 1.',
             'kilos_caja.min'      => 'Los kilos por caja deben ser mayores a 0.',
             'estado.in'           => 'Estado no válido.',
