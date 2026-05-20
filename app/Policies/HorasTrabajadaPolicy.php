@@ -11,7 +11,7 @@ class HorasTrabajadaPolicy
     public function viewAny(?User $user): bool
     {
         if (is_null($user)) return true;
-        return in_array($user->rol, ['administrador', 'encargado']);
+        return in_array($user->rol, ['administrador', 'encargado', 'recolector']);
     }
 
     // Admin y Encargado ven cualquier registro.
@@ -29,10 +29,10 @@ class HorasTrabajadaPolicy
         return $user->rol === 'administrador';
     }
 
-    // Solo Admin y Encargado pueden editar.
+    // Solo Admin puede editar.
     public function update(User $user, HorasTrabajada $horas): bool
     {
-        return in_array($user->rol, ['administrador', 'encargado']);
+        return $user->rol === 'administrador';
     }
 
     // Solo Admin puede borrar.

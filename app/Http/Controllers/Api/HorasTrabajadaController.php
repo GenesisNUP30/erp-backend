@@ -16,10 +16,20 @@ class HorasTrabajadaController extends Controller
     {
         $this->authorize('viewAny', HorasTrabajada::class);
 
-        $query = HorasTrabajada::with(['trabajador:id,name', 'cosecha:id,nombre_cosecha'])->orderBy('fecha', 'desc');
-        if ($request->filled('user_id'))    $query->where('user_id', $request->input('user_id'));
-        if ($request->filled('cosecha_id')) $query->where('cosecha_id', $request->input('cosecha_id'));
-        if ($request->filled('pago_id'))    $query->where('pago_id', $request->input('pago_id'));
+        $authUser = $request->user();
+        $query = HorasTrabajada::with([
+            'trabajador:id,name',
+            'cosecha:id,nombre_cosecha',
+        ])->orderBy('fecha', 'desc');
+
+        if ($authUser && $authUser->rol === 'recolector') {
+            $query->where('user_id', $authUser->id);
+        } else {
+            // Admin y encargado pueden filtrar opcionalmente
+            if ($request->filled('user_id'))    $query->where('user_id', $request->input('user_id'));
+            if ($request->filled('cosecha_id')) $query->where('cosecha_id', $request->input('cosecha_id'));
+            if ($request->filled('pago_id'))    $query->where('pago_id', $request->input('pago_id'));
+        }
 
         $horas = $query->paginate($request->input('per_page', 5));
         return response()->json([

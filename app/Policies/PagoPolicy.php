@@ -11,7 +11,7 @@ class PagoPolicy
     public function viewAny(?User $user): bool
     {
         if (is_null($user)) return true;
-        return in_array($user->rol, ['administrador', 'encargado']);
+        return in_array($user->rol, ['administrador', 'encargado', 'recolector']);
     }
 
     // Admin y Encargado ven cualquier pago.
@@ -32,7 +32,7 @@ class PagoPolicy
     // Admin y Encargado pueden actualizar estado (ej: validar un borrador).
     public function update(User $user, Pago $pago): bool
     {
-        return in_array($user->rol, ['administrador', 'encargado']);
+        return $user->rol === 'administrador';
     }
 
     // Solo Admin puede borrar.

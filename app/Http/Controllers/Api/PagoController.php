@@ -18,9 +18,17 @@ class PagoController extends Controller
     {
         $this->authorize('viewAny', Pago::class);
 
-        $query = Pago::with('trabajador:id,name')->orderBy('anio', 'desc')->orderBy('mes', 'desc');
-        if ($request->filled('user_id')) $query->where('user_id', $request->input('user_id'));
-        if ($request->filled('estado'))  $query->where('estado', $request->input('estado'));
+        $authUser = $request->user();
+        $query = Pago::with('trabajador:id,name')
+            ->orderBy('anio', 'desc')
+            ->orderBy('mes', 'desc');
+
+        if ($authUser && $authUser->rol === 'recolector') {
+            $query->where('user_id', $authUser->id);
+        } else {
+            if ($request->filled('user_id')) $query->where('user_id', $request->input('user_id'));
+            if ($request->filled('estado'))  $query->where('estado', $request->input('estado'));
+        }
 
         $pagos = $query->paginate($request->input('per_page', 5));
         return response()->json([

@@ -14,8 +14,12 @@ class DashboardController extends Controller
         $user = $request->user();
         $hoy = Carbon::today();
 
+        if (!$user) {
+            return response()->json(['data' => ['welcome' => 'Bienvenido']], 200);
+        }
+        
         $data = [
-            'welcome' => "Hola, {$user->name}",
+            'welcome' => $user ? "Hola, {$user->name}" : "Bienvenido",
         ];
 
         // 🔵 ADMIN
