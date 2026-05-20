@@ -18,7 +18,7 @@ class VariedadRequest extends FormRequest
 
         return [
             'nombre' => 'required|string|max:255',
-            'tipo' => 'required|in:remontante, no_remontante',
+            'tipo' => 'required|in:remontante,no_remontante',
             'descripcion' => 'nullable|string|max:255',
         ];
     }

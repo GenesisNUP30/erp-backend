@@ -65,9 +65,7 @@ class PagoController extends Controller
     {
         $pago = Pago::findOrFail($id);
         $this->authorize('update', $pago);
-        if (in_array($pago->estado, ['pagado', 'archivado'])) {
-            return response()->json(['success' => false, 'message' => 'No se puede modificar un pago ya procesado'], 400);
-        }
+        
         $pago->update($request->validated());
         return response()->json(['success' => true, 'message' => 'Pago actualizado correctamente', 'data' => $pago]);
     }
@@ -76,9 +74,7 @@ class PagoController extends Controller
     {
         $pago = Pago::findOrFail($id);
         $this->authorize('delete', $pago);
-        if (in_array($pago->estado, ['pagado', 'archivado'])) {
-            return response()->json(['success' => false, 'message' => 'No se puede eliminar un pago ya procesado'], 400);
-        }
+
         DB::transaction(function () use ($pago) {
             HorasTrabajada::where('pago_id', $pago->id)->update(['pago_id' => null]);
             $pago->delete();
