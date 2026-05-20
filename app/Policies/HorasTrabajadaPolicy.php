@@ -23,10 +23,10 @@ class HorasTrabajadaPolicy
         return $user->rol === 'recolector' && $horas->user_id === $user->id;
     }
 
-    // Solo Admin y Encargado pueden registrar horas.
+    // Solo Admin puede registrar horas.
     public function create(User $user): bool
     {
-        return in_array($user->rol, ['administrador', 'encargado']);
+        return $user->rol === 'administrador';
     }
 
     // Solo Admin y Encargado pueden editar.
