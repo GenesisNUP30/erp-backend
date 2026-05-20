@@ -14,26 +14,30 @@ class DashboardController extends Controller
         $user = $request->user();
         $hoy = Carbon::today();
 
+        if (!$user) {
+            return response()->json(['data' => ['welcome' => 'Bienvenido']], 200);
+        }
+
         $data = [
-            'welcome' => "Hola, {$user->name}",
+            'welcome' => $user ? "Hola, {$user->name}" : "Bienvenido",
         ];
 
         // 🔵 ADMIN
         if ($user->rol === 'administrador') {
 
-            $kilosHoy = DB::table('erp_recolecciones')
+            $kilosHoy = DB::table('recolecciones')
                 ->whereDate('fecha', $hoy)
                 ->sum(DB::raw('num_cajas * kilos_caja'));
 
-            $ventasHoy = DB::table('erp_ventas_diarias')
+            $ventasHoy = DB::table('ventas_diarias')
                 ->whereDate('fecha', $hoy)
                 ->sum('importe_total');
 
-            $usuariosActivos = DB::table('erp_users')
+            $usuariosActivos = DB::table('users')
                 ->whereNull('fecha_baja')
                 ->count();
 
-            $actividad = DB::table('erp_recolecciones')
+            $actividad = DB::table('recolecciones')
                 ->orderByDesc('fecha')
                 ->limit(5)
                 ->get();
@@ -50,15 +54,15 @@ class DashboardController extends Controller
         // 🟡 ENCARGADO
         if ($user->rol === 'encargado') {
 
-            $kilosHoy = DB::table('erp_recolecciones')
+            $kilosHoy = DB::table('recolecciones')
                 ->whereDate('fecha', $hoy)
                 ->sum(DB::raw('num_cajas * kilos_caja'));
 
-            $tareasHoy = DB::table('erp_tareas')
+            $tareasHoy = DB::table('tareas')
                 ->whereDate('fecha', $hoy)
                 ->get();
 
-            $actividad = DB::table('erp_recolecciones')
+            $actividad = DB::table('recolecciones')
                 ->orderByDesc('fecha')
                 ->limit(5)
                 ->get();
@@ -74,17 +78,17 @@ class DashboardController extends Controller
         // 🟢 RECOLECTOR
         if ($user->rol === 'recolector') {
 
-            $misKilos = DB::table('erp_recolecciones')
+            $misKilos = DB::table('recolecciones')
                 ->where('user_id', $user->id)
                 ->whereDate('fecha', $hoy)
                 ->sum(DB::raw('num_cajas * kilos_caja'));
 
-            $misCajas = DB::table('erp_recolecciones')
+            $misCajas = DB::table('recolecciones')
                 ->where('user_id', $user->id)
                 ->whereDate('fecha', $hoy)
                 ->sum('num_cajas');
 
-            $tareas = DB::table('erp_tareas')
+            $tareas = DB::table('tareas')
                 ->where('user_id', $user->id)
                 ->where('estado', 'pendiente')
                 ->get();

@@ -42,7 +42,7 @@ class CampaniaPolicy
      */
     public function update(User $user, Campania $campania): bool
     {
-        return $user->rol === 'administrador';
+        return in_array($user->rol, ['administrador', 'encargado']);
     }
 
     /**

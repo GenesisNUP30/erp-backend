@@ -7,6 +7,7 @@ use App\Http\Requests\VariedadRequest;
 use App\Models\Variedad;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class VariedadController extends Controller
 {
@@ -103,11 +104,30 @@ class VariedadController extends Controller
         ]);
     }
 
-    public function todas()
+    public function todas(Request $request)
     {
-        $variedades = Variedad::select('id', 'nombre', 'tipo')
-            ->orderBy('nombre')
-            ->get();
+        $currentId = $request->query('current_id');
+
+        $variedades = Variedad::orderBy('nombre')
+            ->get()
+            ->map(fn($v) => [
+                'id' => $v->id,
+                'nombre' => $v->nombre,
+            ]);
+
+        // Si hay un current_id y no está en los resultados (fue borrada), lo añadimos
+        if ($currentId) {
+            $existe = $variedades->firstWhere('id', $currentId);
+            if (!$existe) {
+                $variedadBorrada = Variedad::withTrashed()->find($currentId);
+                if ($variedadBorrada) {
+                    $variedades->push([
+                        'id' => $variedadBorrada->id,
+                        'nombre' => $variedadBorrada->nombre . ' (eliminada)',
+                    ]);
+                }
+            }
+        }
 
         return response()->json(['success' => true, 'data' => $variedades]);
     }
